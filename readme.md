@@ -1,8 +1,26 @@
-# Название книги: Приключения в мире Git
+#!/bin/bash
 
-## Глава 1: Введение
-Здесь будет введение в удивительный мир Git.
 
-## Глава 2: Основы Git
-Основные понятия и команды Git.
+ERRORS=0
+
+function check_errors {
+  if [ $1 -ne 0 ]; then
+    echo "Ошибка: $2"
+    ERRORS=$((ERRORS + 1))
+  fi
+}
+
+
+prettier --check "src/**/*.js" "src/**/*.ts"
+check_errors $? "Prettier обнаружил ошибки форматирования"
+
+
+if [ $ERRORS -ne 0 ]; then
+  echo "Прошло успешно с ошибками. Отмена коммита."
+  exit 1
+else
+  echo "Pre-commit проверка успешно завершена."
+fi
+
+exit 0
 
